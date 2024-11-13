@@ -1,0 +1,53 @@
+// File: file_compression.c
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+void compress_file(const char *input_file, const char *output_file)
+{
+    FILE *in = fopen(input_file, "r");
+    FILE *out = fopen(output_file, "w");
+    if (!in || !out)
+    {
+        perror("Error opening file");
+        return;
+    }
+
+    int count = 1;
+    char current, previous;
+
+    previous = fgetc(in);
+    while ((current = fgetc(in)) != EOF)
+    {
+        if (current == previous)
+        {
+            count++;
+        }
+        else
+        {
+            fprintf(out, "%c%d", previous, count);
+            count = 1;
+        }
+        previous = current;
+    }
+    fprintf(out, "%c%d", previous, count);
+
+    fclose(in);
+    fclose(out);
+    printf("File compressed to %s\n", output_file);
+}
+
+int main()
+{
+    char input_file[100], output_file[100];
+
+    printf("Enter input file name: ");
+    scanf("%s", input_file);
+    printf("Enter output file name: ");
+    scanf("%s", output_file);
+
+    compress_file(input_file, output_file);
+
+    return 0;
+}
