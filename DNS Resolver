@@ -1,0 +1,37 @@
+// File: dns_resolver.c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+
+void resolve_hostname(const char *hostname)
+{
+    struct hostent *he = gethostbyname(hostname);
+    if (he == NULL)
+    {
+        perror("gethostbyname");
+        return;
+    }
+
+    printf("Official name: %s\n", he->h_name);
+
+    for (int i = 0; he->h_aliases[i] != NULL; i++)
+    {
+        printf("Alias: %s\n", he->h_aliases[i]);
+    }
+
+    for (int i = 0; he->h_addr_list[i] != NULL; i++)
+    {
+        printf("IP Address: %s\n", inet_ntoa(*(struct in_addr *)he->h_addr_list[i]));
+    }
+}
+
+int main()
+{
+    char hostname[256];
+    printf("Enter hostname: ");
+    scanf("%255s", hostname);
+    resolve_hostname(hostname);
+    return 0;
+}
