@@ -1,0 +1,52 @@
+// File: calculator.c
+
+#include <stdio.h>
+
+void calculator()
+{
+    double num1, num2;
+    char operator;
+
+    while (1)
+    {
+        printf("Enter an operation (e.g., 5 + 3) or 'q' to quit: ");
+        if (scanf(" %lf %c %lf", &num1, &operator, &num2) != 3)
+        {
+            char quit;
+            scanf(" %c", &quit);
+            if (quit == 'q')
+                break;
+            printf("Invalid input.\n");
+            continue;
+        }
+
+        switch (operator)
+        {
+        case '+':
+            printf("Result: %.2lf\n", num1 + num2);
+            break;
+        case '-':
+            printf("Result: %.2lf\n", num1 - num2);
+            break;
+        case '*':
+            printf("Result: %.2lf\n", num1 * num2);
+            break;
+        case '/':
+            if (num2 != 0)
+                printf("Result: %.2lf\n", num1 / num2);
+            else
+                printf("Error: Division by zero.\n");
+            break;
+        default:
+            printf("Invalid operator.\n");
+            break;
+        }
+    }
+}
+
+int main()
+{
+    printf("Simple Calculator\n");
+    calculator();
+    return 0;
+}
