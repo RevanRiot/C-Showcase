@@ -1,0 +1,42 @@
+// File: simple_interpreter.c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+int interpret_expression(const char *expr)
+{
+    int result = 0;
+    int num = 0;
+    char op = '+';
+
+    while (*expr)
+    {
+        if (isdigit(*expr))
+        {
+            num = num * 10 + (*expr - '0');
+        }
+        else if (*expr == '+' || *expr == '-')
+        {
+            result = (op == '+') ? result + num : result - num;
+            num = 0;
+            op = *expr;
+        }
+        expr++;
+    }
+    result = (op == '+') ? result + num : result - num;
+    return result;
+}
+
+int main()
+{
+    char expression[256];
+
+    printf("Enter a simple arithmetic expression (e.g., 3+5-2): ");
+    scanf("%255s", expression);
+
+    int result = interpret_expression(expression);
+    printf("Result: %d\n", result);
+
+    return 0;
+}
