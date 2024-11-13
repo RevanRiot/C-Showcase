@@ -1,0 +1,66 @@
+// File: maze_solver.c
+
+#include <stdio.h>
+
+#define SIZE 5
+
+int maze[SIZE][SIZE] = {
+    {1, 0, 0, 0, 0},
+    {1, 1, 0, 1, 0},
+    {0, 1, 0, 1, 0},
+    {0, 1, 1, 1, 0},
+    {0, 0, 0, 1, 1}};
+
+int solution[SIZE][SIZE] = {0};
+
+int solve_maze(int x, int y)
+{
+    if (x == SIZE - 1 && y == SIZE - 1 && maze[x][y] == 1)
+    {
+        solution[x][y] = 1;
+        return 1;
+    }
+
+    if (x >= 0 && x < SIZE && y >= 0 && y < SIZE && maze[x][y] == 1 && solution[x][y] == 0)
+    {
+        solution[x][y] = 1;
+
+        if (solve_maze(x + 1, y))
+            return 1;
+        if (solve_maze(x, y + 1))
+            return 1;
+        if (solve_maze(x - 1, y))
+            return 1;
+        if (solve_maze(x, y - 1))
+            return 1;
+
+        solution[x][y] = 0; // Backtrack
+    }
+    return 0;
+}
+
+void print_solution()
+{
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            printf("%d ", solution[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    if (solve_maze(0, 0))
+    {
+        printf("Solution:\n");
+        print_solution();
+    }
+    else
+    {
+        printf("No solution exists.\n");
+    }
+    return 0;
+}
