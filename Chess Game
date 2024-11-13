@@ -1,0 +1,39 @@
+// File: chess_game.c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define SIZE 8
+
+char board[SIZE][SIZE];
+
+void initialize_board()
+{
+    memset(board, ' ', sizeof(board));
+    strcpy(board[0], "rnbqkbnr");
+    strcpy(board[1], "pppppppp");
+    strcpy(board[6], "PPPPPPPP");
+    strcpy(board[7], "RNBQKBNR");
+}
+
+void print_board()
+{
+    printf("\nChess Board:\n");
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            printf(" %c ", board[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    initialize_board();
+    print_board();
+    printf("This is a placeholder for a simple chess game logic.\n");
+    return 0;
+}
