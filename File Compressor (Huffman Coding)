@@ -1,0 +1,19 @@
+// File: huffman_compressor.c
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void compress_file(const char *filename)
+{
+    printf("This is a placeholder for Huffman compression logic.\n");
+    printf("File %s would be compressed here.\n", filename);
+}
+
+int main()
+{
+    char filename[256];
+    printf("Enter file name to compress: ");
+    scanf("%255s", filename);
+    compress_file(filename);
+    return 0;
+}
