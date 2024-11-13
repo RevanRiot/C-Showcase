@@ -1,0 +1,36 @@
+// File: memory_manager.c
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    void *address;
+    size_t size;
+} MemoryBlock;
+
+MemoryBlock *allocations = NULL;
+size_t allocation_count = 0;
+
+void allocate_memory(size_t size) {
+    allocations = realloc(allocations, (allocation_count + 1) * sizeof(MemoryBlock));
+    if (allocations == NULL) {
+        perror("Reallocation failed");
+        exit(EXIT_FAILURE);
+    }
+    allocations[allocation_count].address = malloc(size);
+    allocations[allocation_count].size = size;
+    printf("Allocated %zu bytes at %p\n", size, allocations[allocation_count].address);
+    allocation_count++;
+}
+
+void free_all_memory() {
+    for (size_t i = 0; i < allocation_count; i++) {
+        printf("Freeing %zu bytes at %p\n", allocations[i].size, allocations[i].address);
+        free(allocations[i].address);
+    }
+    free(allocations);
+    allocation_count = 0;
+}
+
+int main() {
+    allocate_memory(
