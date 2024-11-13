@@ -1,0 +1,52 @@
+// File: simple_shell.c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define MAX_CMD_LENGTH 1024
+#define MAX_ARGS 64
+
+void execute_command(char *input) {
+    char *args[MAX_ARGS];
+    int i = 0;
+
+    args[i] = strtok(input, " \n");
+    while (args[i] != NULL && i < MAX_ARGS - 1) {
+        i++;
+        args[i] = strtok(NULL, " \n");
+    }
+
+    if (execvp(args[0], args) == -1) {
+        perror("Error executing command");
+    }
+}
+
+int main() {
+    char input[MAX_CMD_LENGTH];
+
+    while (1) {
+        printf("myshell> ");
+        if (fgets(input, MAX_CMD_LENGTH, stdin) == NULL) {
+            printf("\n");
+            break;
+        }
+
+        if (strncmp(input, "exit", 4) == 0) {
+            break;
+        }
+
+        pid_t pid = fork();
+        if (pid == 0) {
+            execute_command(input);
+            exit(EXIT_FAILURE);
+        } else if (pid > 0) {
+            wait(NULL);
+        } else {
+            perror("Fork failed");
+        }
+    }
+
+    return 0;
+}
